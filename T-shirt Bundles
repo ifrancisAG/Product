@@ -1,9 +1,9 @@
 select 
 count (case when tags like '%T-shirt Bundle%' THEN i.id  ELSE NULL end) as bundle, 
-count (case when tags NOT like '%T-shirt Bundle%' THEN i.id ELSE NULL end) as not_bundled,
-(bundle + not_bundled) as total,
-bundle/total::float  as bpercentage, 
-not_bundled/total::float as npercentage 
+count (case when tags NOT like '%T-shirt Bundle%' THEN i.id ELSE NULL end) as Individual,
+(bundle + individual) as total,
+ROUND(bundle/total::float,2) || '%'  as Percent_Bundle, 
+ROUND(individual/total::float,2) || '%' as Percent_Individual
 from shopify.orders__line_items i
 left join shopify.orders o on  o.id = i._sdc_source_key_id
 where processed_at >= '2019-09-1'
