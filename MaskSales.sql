@@ -5,7 +5,7 @@ select
  END as customer_distinction, 
 split_part(title, '-',1) as item,  
 count( DISTINCT o.id) as order_count,
-count(i._sdc_source_key_id) as items
+SUM (i.quantity) as items
 from shopify.customers AS c
 join shopify.orders o on o.customer__id = c.id 
 join shopify.orders__line_items i on o.id = i._sdc_source_key_id
